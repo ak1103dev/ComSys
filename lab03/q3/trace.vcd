@@ -1,0 +1,129 @@
+$date
+     Jan 30, 2016       17:15:21
+$end
+
+$version
+ SystemC 2.3.1-Accellera --- Jan 20 2016 10:07:01
+$end
+
+$timescale
+     1 ps
+$end
+
+$scope module SystemC $end
+$var wire    1  aaaaa  CI       $end
+$var wire    1  aaaab  A1       $end
+$var wire    1  aaaac  A0       $end
+$var wire    1  aaaad  B1       $end
+$var wire    1  aaaae  B0       $end
+$var wire    1  aaaaf  CO       $end
+$var wire    1  aaaag  SUM1       $end
+$var wire    1  aaaah  SUM0       $end
+$upscope $end
+$enddefinitions  $end
+
+$comment
+All initial values are dumped below at time 0 sec = 0 timescale units.
+$end
+
+$dumpvars
+0aaaaa
+0aaaab
+0aaaac
+0aaaad
+0aaaae
+0aaaaf
+0aaaag
+0aaaah
+$end
+
+#20
+1aaaac
+1aaaah
+
+#30
+1aaaab
+0aaaac
+1aaaag
+0aaaah
+
+#40
+1aaaac
+1aaaah
+
+#50
+0aaaab
+0aaaac
+1aaaae
+0aaaag
+
+#60
+1aaaac
+1aaaag
+0aaaah
+
+#70
+1aaaab
+0aaaac
+1aaaah
+
+#80
+1aaaac
+1aaaaf
+0aaaag
+0aaaah
+
+#90
+0aaaab
+0aaaac
+1aaaad
+0aaaae
+0aaaaf
+1aaaag
+
+#100
+1aaaac
+1aaaah
+
+#110
+1aaaab
+0aaaac
+1aaaaf
+0aaaag
+0aaaah
+
+#120
+1aaaac
+1aaaah
+
+#130
+0aaaab
+0aaaac
+1aaaae
+0aaaaf
+1aaaag
+
+#140
+1aaaac
+1aaaaf
+0aaaag
+0aaaah
+
+#150
+1aaaab
+0aaaac
+1aaaah
+
+#160
+1aaaac
+1aaaag
+0aaaah
+
+#170
+0aaaab
+0aaaac
+0aaaad
+0aaaae
+0aaaaf
+0aaaag
+
