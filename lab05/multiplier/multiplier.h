@@ -9,11 +9,6 @@ SC_MODULE(multiplier) {
 	sc_uint<16> RA, RB;
 	sc_uint<32> RC;
 
-	bool odd(unsigned int x)
-	{
-		return x % 2;
-	}
-
     void p1() {
 		while (1)
 		{
@@ -21,14 +16,14 @@ SC_MODULE(multiplier) {
 			RA=A.read(); RB=B.read(); RC=0;
 			while(RA>0)
 			{
-				if(odd(RA)) RC=RC+RB;
+				if(RA[0]) RC=RC+RB;
 				RA = RA >> 1;
 				RB = RB << 1;
 			}
-			Ready.write(1);
+			Ready = 1;
 			C.write(RC);
 			wait(); // !Start
-			Ready.write(0);
+			Ready = 0;
 		}
     }
 

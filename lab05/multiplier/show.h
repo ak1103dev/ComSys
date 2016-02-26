@@ -10,7 +10,7 @@ SC_MODULE(show) {
 
     void pc1() {
 		cout << A.read() << " * " << B.read() << " = " << C.read() << endl;
-		cout << "clk=" << clk << ", start=" << start << ", ready="  << ready << endl;
+//		cout << "clk=" << clk << ", start=" << start << ", ready="  << ready << endl;
     }
 
     SC_CTOR(show) {
