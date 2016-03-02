@@ -15,9 +15,8 @@ SC_MODULE(stim) {
 
     void ps1() {
 		test(0, 0);
-		test(7, 3);
-		test(10, 5);
-		test(38, 5);
+		test(30, 4);
+		test(30, 5);
 		sc_stop();
     }
 
