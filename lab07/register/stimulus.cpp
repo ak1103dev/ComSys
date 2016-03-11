@@ -1,10 +1,11 @@
 #include "reg.h"
+#define N 16
 
 SC_MODULE(show) {
 	SC_CTOR(show) {
 
 	}
-	void print(bool clk, sc_uint<4> din, sc_uint<4> dout, bool enable, bool rw, bool clr) {
+	void print(bool clk, sc_uint<N> din, sc_uint<N> dout, bool enable, bool rw, bool clr) {
 		cout << "clk: " << clk << endl;
 		cout << "clear: " << clr << endl;
 		cout << "enable: " << enable << endl;
@@ -19,12 +20,12 @@ SC_MODULE(show) {
 
 int sc_main(int argc, char* argv[]) {
 
-    sc_signal<sc_uint<4> > din, dout;
+    sc_signal<sc_uint<N> > din, dout;
     sc_signal<bool> enable, rw, clr;
 
-    sc_clock clk("clk",10,SC_NS);
+    sc_clock clk("clk",50,SC_NS);
 
-    reg4 DUT("reg4");
+    reg DUT("reg");
     DUT.clk(clk);
     DUT.din(din);
     DUT.dout(dout);
@@ -41,18 +42,13 @@ int sc_main(int argc, char* argv[]) {
     sc_trace(fp,clr,"clr");
     sc_trace(fp,rw,"rw");
 
-   // din=1;
-   // sc_start(100, SC_NS);
-   // din=2;
-   // sc_start(100, SC_NS);
-
 	show show("show");
 
 	clr = 0;
-  	sc_start(100, SC_NS);
+  	sc_start(50, SC_NS);
 
 	clr = 1;
-  	sc_start(100, SC_NS);
+  	sc_start(50, SC_NS);
 
 	enable=1; rw=1; din=3;
   	sc_start(100, SC_NS);

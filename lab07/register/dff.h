@@ -18,9 +18,7 @@ SC_MODULE(dff) {
 			}
 			else if(enable) {
 				if(rw) {
-//					cout << "din: " << din.read() << endl;
 					value = din.read();
-					//cout << "value: " << value << endl;
 				}
 				else {
 					dout.write(value);
@@ -31,7 +29,5 @@ SC_MODULE(dff) {
 
 	SC_CTOR(dff) {
 		SC_CTHREAD(p1, clk.pos());
-		//SC_THREAD(p1);
-		//sensitive << clk.pos();
 	}
 };
