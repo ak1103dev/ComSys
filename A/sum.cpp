@@ -12,7 +12,7 @@ unsigned long long  sum_array (int array[], unsigned long len)
 {
     int i;
     unsigned long long value=0;
-    for (i=0; i < len; i++)
+    for (i=1; i <= len; i++)
      value += array[i];
 
     return value;
