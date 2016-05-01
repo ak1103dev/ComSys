@@ -4,8 +4,28 @@
 #include <string.h>
 
 int string_search(char* data, char* target) {
+	char* current;
+	char* a;
+	char* b;
 
+	for (current = data; *current != '\0'; current++) {
+		if (*current == *target) {
+			a = current + 1;
+			b = target + 1;
 
+			while(*b != '\0') {
+				if (*a != *b) {
+				  break;
+				}
+				a++;
+				b++;
+			}
+
+			if (*b == '\0') {
+				return 1;
+			}
+		}
+	}
 
 }
 
