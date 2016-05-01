@@ -4,7 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define THREADS 8
+//#define THREADS 8
+short THREADS;
 
 struct Stuff {
 	int length;
@@ -65,10 +66,13 @@ int main(int argc, char** argv) {
 	a = time(NULL);
 
 	/* open the file */
-	if (argc < 2) {
-		printf("Please pass an input file.\n");
+	if (argc < 4) {
+	//	printf("Please pass an input file.\n");
+		printf("Please pass 4 arguments.\n");
 		return 0;
 	}
+	THREADS = atoi(argv[3]);
+	printf("THREADS: %d\n", THREADS);
 	file = fopen(argv[1], "r");
 	if (!file) {
 		printf("Could not open %s for reading.\n", argv[1]);
