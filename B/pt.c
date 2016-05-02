@@ -6,6 +6,7 @@
 
 //#define THREADS 8
 short THREADS;
+char CHUNK;
 
 struct Stuff {
 	int length;
@@ -71,13 +72,22 @@ int main(int argc, char** argv) {
 		printf("Please pass 4 arguments.\n");
 		return 0;
 	}
-	THREADS = atoi(argv[3]);
-	printf("THREADS: %d\n", THREADS);
 	file = fopen(argv[1], "r");
 	if (!file) {
 		printf("Could not open %s for reading.\n", argv[1]);
 		return 0;
 	}
+
+	if(*argv[2] >= '0' && *argv[2] <= '9') {
+		CHUNK = atoi(argv[2]);
+		printf("chunk_size: %d\n", CHUNK);
+	}
+	else {
+		CHUNK = *argv[2];
+		printf("chunk_size: %c\n", CHUNK);
+	}
+	THREADS = atoi(argv[3]);
+	printf("num_threads: %d\n", THREADS);
 
 	/* find the length of the file */
 	fseek(file, 0L, SEEK_END);
