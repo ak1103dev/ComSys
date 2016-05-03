@@ -4,21 +4,24 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define TRUE 1
+#define FALSE 0
 //#define THREADS 8
 pthread_mutex_t work_index_mutex;
 int work_index = 0;
 short THREADS;
 char CHUNK;
+int chunk_size;
+int isDynamic;
 
 struct Stuff {
 	int length;
 	char* data;
 	char* target;
 	int tid;
-	int chunk_size;
 };
 
-void* string_search_dynamic(void* stuff) {
+void* string_search(void* stuff) {
 	char* current;
 	char* a;
 	char* b;
@@ -27,43 +30,6 @@ void* string_search_dynamic(void* stuff) {
 	char* target = ((struct Stuff*) stuff)->target;
 	int tid = ((struct Stuff*) stuff)->tid;
 	int length = ((struct Stuff*) stuff)->length;
-
-	while (work_index < length) {
-		pthread_mutex_lock (&work_index_mutex);
-		current = data + work_index;
-		work_index++;
-		pthread_mutex_unlock (&work_index_mutex);
-		if (*current == *target) {
-			a = current + 1;
-			b = target + 1;
-			while(*b != '\0') {
-				if (*a != *b) {
-					break;
-				}
-				a++;
-				b++;
-			}
-			if (*b == '\0') {
-				*result = 1;
-				return (void*) result;
-			}
-		}
-	}
-
-	*result = 0;
-	return (void*) result;
-}
-
-void* string_search_equal(void* stuff) {
-	char* current;
-	char* a;
-	char* b;
-	int* result = malloc(sizeof(int));
-	char* data = ((struct Stuff*) stuff)->data;
-	char* target = ((struct Stuff*) stuff)->target;
-	int tid = ((struct Stuff*) stuff)->tid;
-	int length = ((struct Stuff*) stuff)->length;
-	int chunk_size = ((struct Stuff*) stuff)->chunk_size;
 
 	int start = (chunk_size) * tid;
 	int end = start + (chunk_size);
@@ -72,20 +38,28 @@ void* string_search_equal(void* stuff) {
 		end = length;
 	}
 
-	for (current = data + start; current != (data + end); current++) {
-		if (*current == *target) {
-			a = current + 1;
-			b = target + 1;
-			while(*b != '\0') {
-				if (*a != *b) {
-					break;
+	while (work_index < length) {
+		pthread_mutex_lock (&work_index_mutex);
+		start = work_index;
+		if (isDynamic) chunk_size = (length - (end + 1)) / THREADS;
+		work_index += chunk_size;
+		end = start + chunk_size;
+		pthread_mutex_unlock (&work_index_mutex);
+		for (current = data + start; current != (data + end); current++) {
+			if (*current == *target) {
+				a = current + 1;
+				b = target + 1;
+				while(*b != '\0') {
+					if (*a != *b) {
+						break;
+					}
+					a++;
+					b++;
 				}
-				a++;
-				b++;
-			}
-			if (*b == '\0') {
-				*result = 1;
-				return (void*) result;
+				if (*b == '\0') {
+					*result = 1;
+					return (void*) result;
+				}
 			}
 		}
 	}
@@ -113,17 +87,33 @@ int main(int argc, char** argv) {
 		printf("Please pass 4 arguments.\n");
 		return 0;
 	}
+	/*
 	if (*argv[2] >= '0' && *argv[2] <= '9'){
 		printf("eh");
 		file = fopen(argv[1], "r");
 		CHUNK = atoi(argv[2]);
 		printf("chunk_size: %d\n", CHUNK);
 	}
-	else if (strcmp(argv[1], "-e") || strcmp(argv[1], "-d")) {
-		printf("xxx");
+	*/
+	if (strcmp(argv[1], "-e")) {
 		file = fopen(argv[2], "r");
 		CHUNK = *(argv[1]+1);
 		printf("chunk_size: %c\n", CHUNK);
+		isDynamic = FALSE;
+	}
+	else if (strcmp(argv[1], "-d")) {
+		file = fopen(argv[2], "r");
+		CHUNK = *(argv[1]+1);
+		printf("chunk_size: %c\n", CHUNK);
+		isDynamic = TRUE;
+	}
+	else { // chunk
+		printf("eh");
+		file = fopen(argv[1], "r");
+		CHUNK = atoi(argv[2]);
+		chunk_size = CHUNK; 
+		printf("chunk_size: %d\n", CHUNK);
+		isDynamic = FALSE;
 	}
 
 	THREADS = atoi(argv[3]);
@@ -142,6 +132,17 @@ int main(int argc, char** argv) {
 	data = malloc(length * sizeof(char) + 1);
 	memset(data, 0, length);
 	fread(data, sizeof(char), length, file);
+
+	// start chunk
+	if (strcmp(argv[1], "-e")) {
+			chunk_size = length / THREADS;
+	}
+	else if (strcmp(argv[1], "-d")) {
+		chunk_size = length / THREADS;
+	}
+	else { // chunk
+		chunk_size = CHUNK;
+	}
 
 	b = time(NULL);
 	double read = difftime(b, a);
@@ -162,10 +163,9 @@ int main(int argc, char** argv) {
 		stuffs[i].length = length;
 		stuffs[i].data = data;
 		stuffs[i].target = target;
-		stuffs[i].chunk_size = CHUNK;
 
 		// if equal (with -e params)
-        pthread_create(&threads[i], NULL, &string_search_equal, &stuffs[i]);
+        pthread_create(&threads[i], NULL, &string_search, &stuffs[i]);
 
 		/*
 		 * if dynamic (with -d params)
