@@ -15,6 +15,7 @@ struct Stuff {
 	char* data;
 	char* target;
 	int tid;
+	int chunk_size;
 };
 
 void* string_search_dynamic(void* stuff) {
@@ -62,9 +63,10 @@ void* string_search_equal(void* stuff) {
 	char* target = ((struct Stuff*) stuff)->target;
 	int tid = ((struct Stuff*) stuff)->tid;
 	int length = ((struct Stuff*) stuff)->length;
+	int chunk_size = ((struct Stuff*) stuff)->chunk_size;
 
-	int start = (length / THREADS) * tid;
-	int end = start + (length / THREADS);
+	int start = (chunk_size) * tid;
+	int end = start + (chunk_size);
 
 	if (tid == (THREADS - 1)) {
 		end = length;
