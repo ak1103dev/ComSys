@@ -29,6 +29,8 @@ void* string_search_dynamic(void* stuff) {
 	while (work_index < length) {
 		pthread_mutex_lock (&work_index_mutex);
 		current = data + work_index;
+		work_index++;
+		pthread_mutex_unlock (&work_index_mutex);
 		if (*current == *target) {
 			a = current + 1;
 			b = target + 1;
@@ -44,8 +46,6 @@ void* string_search_dynamic(void* stuff) {
 				return (void*) result;
 			}
 		}
-		work_index++;
-		pthread_mutex_unlock (&work_index_mutex);
 	}
 
 	*result = 0;
