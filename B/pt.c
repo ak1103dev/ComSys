@@ -160,21 +160,13 @@ int main(int argc, char** argv) {
 	pthread_t threads[THREADS];
 
 	int i;
+	pthread_mutex_init(&work_index_mutex, NULL);
 	for (i = 0; i < THREADS; i++) {
 		stuffs[i].tid = i;
 		stuffs[i].length = length;
 		stuffs[i].data = data;
 		stuffs[i].target = target;
-
-	//	if (CHUNK == 'd') {
-	//		pthread_create(&threads[i], NULL, &string_search_dynamic, &stuffs[i]);
-	//		pthread_mutex_init(&work_index_mutex, NULL);
-	//	}
-
-	//	else {
-        	pthread_create(&threads[i], NULL, &string_search, &stuffs[i]);
-	//	}
-
+		pthread_create(&threads[i], NULL, &string_search, &stuffs[i]);
     }
 
 	/* gather results */
@@ -190,6 +182,7 @@ int main(int argc, char** argv) {
 		free(local_result);
 	}
 
+	pthread_mutex_destroy(&work_index_mutex);
 	b = time(NULL);
 	double search = difftime(b, a);
 	printf("Searching took %lf seconds.\n", search);
