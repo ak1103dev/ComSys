@@ -33,6 +33,7 @@ void* string_search(void* stuff) {
 
 	int start = (chunk_size) * tid;
 	int end = start + (chunk_size);
+	char* last = data + (length - 1);
 
 	if (tid == (THREADS - 1)) {
 		end = length;
@@ -41,11 +42,11 @@ void* string_search(void* stuff) {
 	while (work_index < length) {
 		pthread_mutex_lock (&work_index_mutex);
 		start = work_index;
-		if (isDynamic) chunk_size = (length - (end + 1)) / THREADS;
+		if (isDynamic) chunk_size = (length - end) / THREADS;
 		work_index += chunk_size;
 		end = start + chunk_size;
 		pthread_mutex_unlock (&work_index_mutex);
-		for (current = data + start; current != (data + end); current++) {
+		for (current = data + start; current != (data + end) && current != last; current++) {
 			if (*current == *target) {
 				a = current + 1;
 				b = target + 1;
