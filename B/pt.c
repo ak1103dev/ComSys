@@ -5,6 +5,8 @@
 #include <string.h>
 
 //#define THREADS 8
+pthread_mutex_t work_index_mutex;
+int work_index = 0;
 short THREADS;
 
 struct Stuff {
@@ -13,6 +15,42 @@ struct Stuff {
 	char* target;
 	int tid;
 };
+
+void* string_search_dynamic(void* stuff) {
+	char* current;
+	char* a;
+	char* b;
+	int* result = malloc(sizeof(int));
+	char* data = ((struct Stuff*) stuff)->data;
+	char* target = ((struct Stuff*) stuff)->target;
+	int tid = ((struct Stuff*) stuff)->tid;
+	int length = ((struct Stuff*) stuff)->length;
+
+	while (work_index < length) {
+		pthread_mutex_lock (&work_index_mutex);
+		current = data + work_index;
+		if (*current == *target) {
+			a = current + 1;
+			b = target + 1;
+			while(*b != '\0') {
+				if (*a != *b) {
+					break;
+				}
+				a++;
+				b++;
+			}
+			if (*b == '\0') {
+				*result = 1;
+				return (void*) result;
+			}
+		}
+		work_index++;
+		pthread_mutex_unlock (&work_index_mutex);
+	}
+
+	*result = 0;
+	return (void*) result;
+}
 
 void* string_search(void* stuff) {
 	char* current;
@@ -65,12 +103,15 @@ int main(int argc, char** argv) {
 	/* get start time */
 	a = time(NULL);
 
+
 	/* open the file */
 	if (argc < 4) {
 	//	printf("Please pass an input file.\n");
 		printf("Please pass 4 arguments.\n");
 		return 0;
 	}
+	pthread_mutex_init(&work_index_mutex, NULL);
+
 	THREADS = atoi(argv[3]);
 	printf("THREADS: %d\n", THREADS);
 	file = fopen(argv[1], "r");
