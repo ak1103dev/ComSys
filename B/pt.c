@@ -52,7 +52,7 @@ void* string_search_dynamic(void* stuff) {
 	return (void*) result;
 }
 
-void* string_search(void* stuff) {
+void* string_search_equal(void* stuff) {
 	char* current;
 	char* a;
 	char* b;
@@ -110,7 +110,6 @@ int main(int argc, char** argv) {
 		printf("Please pass 4 arguments.\n");
 		return 0;
 	}
-	pthread_mutex_init(&work_index_mutex, NULL);
 
 	THREADS = atoi(argv[3]);
 	printf("THREADS: %d\n", THREADS);
@@ -150,7 +149,14 @@ int main(int argc, char** argv) {
 		stuffs[i].data = data;
 		stuffs[i].target = target;
 
-        pthread_create(&threads[i], NULL, &string_search, &stuffs[i]);
+		// if equal (with -e params)
+        pthread_create(&threads[i], NULL, &string_search_equal, &stuffs[i]);
+
+		/*
+		 * if dynamic (with -d params)
+        pthread_create(&threads[i], NULL, &string_search_dynamic, &stuffs[i]);
+		pthread_mutex_init(&work_index_mutex, NULL);
+		*/
     }
 
 	/* gather results */
