@@ -162,6 +162,7 @@ int main(int argc, char** argv) {
 		stuffs[i].length = length;
 		stuffs[i].data = data;
 		stuffs[i].target = target;
+		stuffs[i].chunk_size = CHUNK;
 
 		// if equal (with -e params)
         pthread_create(&threads[i], NULL, &string_search_equal, &stuffs[i]);
