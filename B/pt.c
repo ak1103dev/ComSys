@@ -111,15 +111,17 @@ int main(int argc, char** argv) {
 		printf("Please pass 4 arguments.\n");
 		return 0;
 	}
-	if (argv[1] == "-e" || argv[1] == "-d") {
-		file = fopen(argv[2], "r");
-		CHUNK = *argv[1] + 1;
-		printf("chunk_size: %c\n", CHUNK);
-	}
-	else {
+	if (*argv[2] >= '0' && *argv[2] <= '9'){
+		printf("eh");
 		file = fopen(argv[1], "r");
 		CHUNK = atoi(argv[2]);
 		printf("chunk_size: %d\n", CHUNK);
+	}
+	else if (strcmp(argv[1], "-e") || strcmp(argv[1], "-d")) {
+		printf("xxx");
+		file = fopen(argv[2], "r");
+		CHUNK = *(argv[1]+1);
+		printf("chunk_size: %c\n", CHUNK);
 	}
 
 	THREADS = atoi(argv[3]);
