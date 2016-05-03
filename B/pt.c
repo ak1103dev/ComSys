@@ -164,14 +164,15 @@ int main(int argc, char** argv) {
 		stuffs[i].target = target;
 		stuffs[i].chunk_size = CHUNK;
 
-		// if equal (with -e params)
-        pthread_create(&threads[i], NULL, &string_search_equal, &stuffs[i]);
+	//	if (CHUNK == 'd') {
+	//		pthread_create(&threads[i], NULL, &string_search_dynamic, &stuffs[i]);
+	//		pthread_mutex_init(&work_index_mutex, NULL);
+	//	}
 
-		/*
-		 * if dynamic (with -d params)
-        pthread_create(&threads[i], NULL, &string_search_dynamic, &stuffs[i]);
-		pthread_mutex_init(&work_index_mutex, NULL);
-		*/
+	//	else {
+        	pthread_create(&threads[i], NULL, &string_search_equal, &stuffs[i]);
+	//	}
+
     }
 
 	/* gather results */
