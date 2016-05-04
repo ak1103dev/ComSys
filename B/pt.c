@@ -8,14 +8,15 @@
 #define FALSE 0
 //#define THREADS 8
 pthread_mutex_t work_index_mutex;
-int work_index = 0;
+long work_index = 0;
 short THREADS;
 char CHUNK;
 int chunk_size;
 int isDynamic;
+int found;
 
 struct Stuff {
-	int length;
+	long length;
 	char* data;
 	char* target;
 	int tid;
@@ -29,26 +30,43 @@ void* string_search(void* stuff) {
 	char* data = ((struct Stuff*) stuff)->data;
 	char* target = ((struct Stuff*) stuff)->target;
 	int tid = ((struct Stuff*) stuff)->tid;
-	int length = ((struct Stuff*) stuff)->length;
+	long length = ((struct Stuff*) stuff)->length;
 
-	int start = (chunk_size) * tid;
-	int end = start + (chunk_size);
-	int last = length - 1;
+	long start = (chunk_size) * tid;
+	long end = start + (chunk_size);
+	long last = length;
 
-	if (tid == (THREADS - 1)) {
-		end = length;
-	}
+	printf("in function\n");
 
+//	if (tid == (THREADS - 1)) {
+//		end = length;
+//	}
+
+	//start = 0;
+	//end = length;
+
+	printf("work_index = %ld\n", work_index);
+	printf("length = %ld\n", length);
 	while (work_index < length) {
+		if (found) break;
+		printf("in while\n");
+
 		pthread_mutex_lock (&work_index_mutex);
+
+		printf("in lock\n");
+
 		start = work_index;
 		if (isDynamic) chunk_size = (length - end) / THREADS;
 		work_index += chunk_size;
 		end = start + chunk_size;
 		pthread_mutex_unlock (&work_index_mutex);
-		if (start > last) break;
+		if (start >= last) break;
 		if (end > last) end = last;
 		for (current = data + start; current != (data + end); current++) {
+			if (found) break;
+
+			printf("in forloop\n");
+
 			if (*current == *target) {
 				a = current + 1;
 				b = target + 1;
@@ -77,7 +95,6 @@ int main(int argc, char** argv) {
 	unsigned int length;
 	char* data;
 	char target[256];
-	int found;
 	time_t a, b;
 
 	/* get start time */
@@ -90,15 +107,15 @@ int main(int argc, char** argv) {
 		printf("Please pass 4 arguments.\n");
 		return 0;
 	}
-	/*
 	if (*argv[2] >= '0' && *argv[2] <= '9'){
-		printf("eh");
+		//printf("eh");
 		file = fopen(argv[1], "r");
 		CHUNK = atoi(argv[2]);
 		printf("chunk_size: %d\n", CHUNK);
+		chunk_size = CHUNK;
+		isDynamic = FALSE;
 	}
-	*/
-	if (strcmp(argv[1], "-e")) {
+	else if (strcmp(argv[1], "-e")) {
 		file = fopen(argv[2], "r");
 		CHUNK = *(argv[1]+1);
 		printf("chunk_size: %c\n", CHUNK);
@@ -110,14 +127,14 @@ int main(int argc, char** argv) {
 		printf("chunk_size: %c\n", CHUNK);
 		isDynamic = TRUE;
 	}
+	/*
 	else { // chunk
 		printf("eh");
 		file = fopen(argv[1], "r");
 		CHUNK = atoi(argv[2]);
-		chunk_size = CHUNK; 
 		printf("chunk_size: %d\n", CHUNK);
-		isDynamic = FALSE;
 	}
+	*/
 
 	THREADS = atoi(argv[3]);
 	printf("THREADS: %d\n", THREADS);
