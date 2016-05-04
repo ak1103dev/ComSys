@@ -64,13 +64,10 @@ void* string_search(void* stuff) {
 		if (end > last) end = last;
 		printf("%ld\n", chunk_size);
 
-		long cur = start;
-		while (cur++ < end) {
-			current = data + start;
-		// for (current = data + start; current != (data + end); current++) {
+		for (current = data + start; current != (data + end); current++) {
 			if (found) break;
 
-			printf("in forloop [end = %ld] [start = %ld] [cur = %ld]\n", end, start, cur);
+			printf("in for loop\n");
 
 			if (*current == *target) {
 				a = current + 1;
@@ -87,7 +84,6 @@ void* string_search(void* stuff) {
 					return (void*) result;
 				}
 			}
-			current++;
 		}
 	}
 
