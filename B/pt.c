@@ -48,7 +48,7 @@ void* string_search(void* stuff) {
 	printf("work_index = %ld\n", work_index);
 	printf("length = %ld\n", length);
 	while (work_index < length) {
-		if (found) break;
+		//if (found) break;
 		printf("in while\n");
 
 		pthread_mutex_lock (&work_index_mutex);
@@ -65,7 +65,7 @@ void* string_search(void* stuff) {
 		printf("%ld\n", chunk_size);
 
 		for (current = data + start; current != (data + end); current++) {
-			if (found) break;
+			//if (found) break;
 
 			printf("in for loop\n");
 
