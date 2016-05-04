@@ -11,7 +11,7 @@ pthread_mutex_t work_index_mutex;
 long work_index = 0;
 short THREADS;
 char CHUNK;
-int chunk_size;
+long chunk_size;
 int isDynamic;
 int found;
 
@@ -62,10 +62,15 @@ void* string_search(void* stuff) {
 		pthread_mutex_unlock (&work_index_mutex);
 		if (start >= last) break;
 		if (end > last) end = last;
-		for (current = data + start; current != (data + end); current++) {
+		printf("%ld\n", chunk_size);
+
+		long cur = start;
+		while (cur++ < end) {
+			current = data + start;
+		// for (current = data + start; current != (data + end); current++) {
 			if (found) break;
 
-			printf("in forloop\n");
+			printf("in forloop [end = %ld] [start = %ld] [cur = %ld]\n", end, start, cur);
 
 			if (*current == *target) {
 				a = current + 1;
@@ -82,6 +87,7 @@ void* string_search(void* stuff) {
 					return (void*) result;
 				}
 			}
+			current++;
 		}
 	}
 
