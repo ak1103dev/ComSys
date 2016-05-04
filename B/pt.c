@@ -46,6 +46,7 @@ void* string_search(void* stuff) {
 		work_index += chunk_size;
 		end = start + chunk_size;
 		pthread_mutex_unlock (&work_index_mutex);
+		if (start > last) break;
 		if (end > last) end = last;
 		for (current = data + start; current != (data + end); current++) {
 			if (*current == *target) {
