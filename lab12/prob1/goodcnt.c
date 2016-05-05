@@ -14,16 +14,16 @@ int *cnt;
 
 sem_t count_sem;
 
-void * Count(void * a)
+void *Count(void *a)
 {
     int i;
-		sem_wait(&count_sem);
     for(i = 0; i < NITER; i++)
     {
+		sem_wait(&count_sem);
 		*cnt = *cnt + 1;
-    }
 		sem_post(&count_sem);
-    printf("segment contains: \"%d\"\n", *cnt);
+    }
+//    printf("segment contains: \"%d\"\n", *cnt);
 }
 
 void sharedMemory()
@@ -99,6 +99,7 @@ int main(int argc, char * argv[])
         printf("\n OK! cnt is [%d]\n", *cnt);
 
     pthread_exit(NULL);
+	sem_destroy(&count_sem);
 	dtachMemory();
 }
 
