@@ -16,14 +16,19 @@ sem_t count_sem;
 
 void *Count(void *a)
 {
-    int i;
-    for(i = 0; i < NITER; i++)
-    {
+	unsigned int i, *myid;
+	myid = (unsigned int *) a;
+
+	for(i = 0; i < NITER; i++) {
 		sem_wait(&count_sem);
 		*cnt = *cnt + 1;
+		*cnt = *cnt + 1;
+		*cnt = *cnt + 1;
+		*cnt = *cnt + 1;
+		*cnt = *cnt + 1;
 		sem_post(&count_sem);
-    }
-//    printf("segment contains: \"%d\"\n", *cnt);
+	}
+	printf("Thread %d segment contains: \"%d\"\n", *myid, *cnt);
 }
 
 void sharedMemory()
@@ -75,10 +80,11 @@ int main(int argc, char * argv[])
 		exit(0);
 	}
 
-	int i;
+	unsigned int i, id[THREADS];
 
 	for(i = 0; i < THREADS; i++) {
-		if(pthread_create(&tid[i], NULL, Count, NULL))
+		id[i] = i;
+		if(pthread_create(&tid[i], NULL, Count, (void* ) &id[i]))
 		{
 		  printf("\n ERROR creating thread %d", i+1);
 		  exit(1);
