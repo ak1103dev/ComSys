@@ -28,7 +28,7 @@ void *Count(void *a)
 		*cnt = *cnt + 1;
 		sem_post(&count_sem);
 	}
-	printf("Thread %d segment contains: \"%d\"\n", *myid, *cnt);
+//	printf("Thread %d segment contains: \"%d\"\n", *myid, *cnt);
 }
 
 void sharedMemory()
@@ -99,13 +99,13 @@ int main(int argc, char * argv[])
 		}
 	}
 
-    if (*cnt < THREADS*NITER)
-        printf("\n BOOM! cnt is [%d], should be %d\n", *cnt, THREADS*NITER);
+    if (*cnt != 5*THREADS*NITER)
+        printf("\n BOOM! cnt is [%d], should be %d\n", *cnt, 5*THREADS*NITER);
     else
         printf("\n OK! cnt is [%d]\n", *cnt);
 
-    pthread_exit(NULL);
 	sem_destroy(&count_sem);
 	dtachMemory();
+	pthread_exit(NULL);
 }
 
