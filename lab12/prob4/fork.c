@@ -1,6 +1,10 @@
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <sys/wait.h>
+
+#define N 100
 
 pid_t pid;
 
@@ -13,13 +17,12 @@ void *mythread(void *arg) {
 
 int foo;
 
-#define N 100
-
 void test() {
 	pthread_t t1;
 	foo = 0;
 	int i;
 	int status;
+
 	for (i=0; i < N; i++)
 	{
 		if (i %2 ==0 ) {
@@ -29,22 +32,11 @@ void test() {
 			wait(&status);
 		}
 		if (pid == 0 ) {
-			pthread_create(&t1, NULL, &mythread, &foo);
-			pthread_join(t1, NULL);
-			exit(1);
+			exit(0);
 		}
 	}
 }
 
 void main() {
-	/*
- 	pid = fork();
-	if (pid == 0) {
-		pthread_create(&t1, NULL, &mythread, &foo);
-		pthread_join(t1, NULL);
-	}
-	else {
-	}
-	*/
 	test();
 }
