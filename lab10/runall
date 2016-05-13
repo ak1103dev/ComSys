@@ -1,0 +1,60 @@
+#!/bin/bash
+./cache-sim log/log16_32_1 16 32 1
+./cache-sim log/log16_32_2 16 32 2
+./cache-sim log/log16_32_4 16 32 4
+./cache-sim log/log16_32_8 16 32 8
+
+./cache-sim log/log16_64_1 16 64 1
+./cache-sim log/log16_64_2 16 64 2
+./cache-sim log/log16_64_4 16 64 4
+./cache-sim log/log16_64_8 16 64 8
+
+./cache-sim log/log16_128_1 16 128 1
+./cache-sim log/log16_128_2 16 128 2
+./cache-sim log/log16_128_4 16 128 4
+./cache-sim log/log16_128_8 16 128 8
+
+./cache-sim log/log32_32_1 32 32 1
+./cache-sim log/log32_32_2 32 32 2
+./cache-sim log/log32_32_4 32 32 4
+./cache-sim log/log32_32_8 32 32 8
+
+./cache-sim log/log32_64_1 32 64 1
+./cache-sim log/log32_64_2 32 64 2
+./cache-sim log/log32_64_4 32 64 4
+./cache-sim log/log32_64_8 32 64 8
+
+./cache-sim log/log32_128_1 32 128 1
+./cache-sim log/log32_128_2 32 128 2
+./cache-sim log/log32_128_4 32 128 4
+./cache-sim log/log32_128_8 32 128 8
+
+./cache-sim log/log64_32_1 64 32 1
+./cache-sim log/log64_32_2 64 32 2
+./cache-sim log/log64_32_4 64 32 4
+./cache-sim log/log64_32_8 64 32 8
+
+./cache-sim log/log64_64_1 64 64 1
+./cache-sim log/log64_64_2 64 64 2
+./cache-sim log/log64_64_4 64 64 4
+./cache-sim log/log64_64_8 64 64 8
+
+./cache-sim log/log64_128_1 64 128 1
+./cache-sim log/log64_128_2 64 128 2
+./cache-sim log/log64_128_4 64 128 4
+./cache-sim log/log64_128_8 64 128 8
+
+./cache-sim log/log128_32_1 128 32 1
+./cache-sim log/log128_32_2 128 32 2
+./cache-sim log/log128_32_4 128 32 4
+./cache-sim log/log128_32_8 128 32 8
+
+./cache-sim log/log128_64_1 128 64 1
+./cache-sim log/log128_64_2 128 64 2
+./cache-sim log/log128_64_4 128 64 4
+./cache-sim log/log128_64_8 128 64 8
+
+./cache-sim log/log128_128_1 128 128 1
+./cache-sim log/log128_128_2 128 128 2
+./cache-sim log/log128_128_4 128 128 4
+./cache-sim log/log128_128_8 128 128 8
